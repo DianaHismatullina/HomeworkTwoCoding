@@ -13,12 +13,11 @@
 
 #define MAX_LOADSTRING 100
 
-// Global Variables:
-HINSTANCE hInst;                                // current instance
-WCHAR szTitle[MAX_LOADSTRING];                  // The title bar text
-WCHAR szWindowClass[MAX_LOADSTRING];            // the main window class name
 
-// Forward declarations of functions included in this code module:
+HINSTANCE hInst;                                
+WCHAR szTitle[MAX_LOADSTRING];                 
+WCHAR szWindowClass[MAX_LOADSTRING];           
+
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -32,14 +31,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);
 
-    // TODO: Place code here.
+   
 
-    // Initialize global strings
+    
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
     LoadStringW(hInstance, IDC_HOMEWORK_TWO, szWindowClass, MAX_LOADSTRING);
     MyRegisterClass(hInstance);
 
-    // Perform application initialization:
+    
     if (!InitInstance (hInstance, nCmdShow))
     {
         return FALSE;
@@ -49,7 +48,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    // Main message loop:
+   
     while (GetMessage(&msg, nullptr, 0, 0))
     {
         if (!TranslateAccelerator(msg.hwnd, hAccelTable, &msg))
@@ -64,11 +63,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 
 
-//
-//  FUNCTION: MyRegisterClass()
-//
-//  PURPOSE: Registers the window class.
-//
+
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW wcex;
@@ -90,19 +85,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&wcex);
 }
 
-//
-//   FUNCTION: InitInstance(HINSTANCE, int)
-//
-//   PURPOSE: Saves instance handle and creates main window
-//
-//   COMMENTS:
-//
-//        In this function, we save the instance handle in a global variable and
-//        create and display the main program window.
-//
+
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
+   hInst = hInstance; 
 
    HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
       CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
@@ -118,9 +104,9 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-#define type short //тип переменной, размер которого совпадает с размером обрабатываемого блока
-#define lef // сдвил влево(lef) или вправо(rig)
-#define sh 2 //сдвиг на n бит в нужную сторону
+#define type short 
+#define lef 
+#define sh 2 
 using namespace std;
 
 
@@ -194,23 +180,14 @@ void shifrDeshifr(char *in, char *out, int n, int key, int reg)
 
 char Str[512];
 int len = 0;
-int key; // Сюда запишем значение секретного ключа
+int key; 
 
-OPENFILENAME ofn; // Структура для стандартных окон "Открыть файл" и "Сохранить"
-TCHAR NameFile[256] = "MyFile.shf"; // Сюда будет записано имя файла
+OPENFILENAME ofn; 
+TCHAR NameFile[256] = "MyFile.shf"; 
 
 
 
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
-//  PURPOSE:  Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	int wmId, wmEvent;
@@ -219,104 +196,102 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 	switch (message)
 	{
-	case WM_CHAR: // Сообщение ввод символа
-				  // Записываем символ в строку
+	case WM_CHAR: 
+				 
 		Str[len] = wParam;
-		len++; // Длина строки увеличивается на 1
-		Str[len] = 0; // Строка заканчивается символом с кодом 0
-					  // Вывод строки на экран
-		hdc = GetDC(hWnd); // Получаем контекст устройства
+		len++; 
+		Str[len] = 0; 
+					  
+		hdc = GetDC(hWnd); 
 		SetTextColor(hdc, RGB(0, 0, 0));
-		TextOut(hdc, 40, 40, Str, len); // Вывод строки
-		ReleaseDC(hWnd, hdc); // Освобождаем контекст устройства
+		TextOut(hdc, 40, 40, Str, len);
+		ReleaseDC(hWnd, hdc);
 		break;
-	case WM_COMMAND: // Сообщение от выбора элемента меню
-		wmId = LOWORD(wParam); // Получаем идентификатор (номер) элемента меню
+	case WM_COMMAND: 
+		wmId = LOWORD(wParam); 
 		wmEvent = HIWORD(wParam);
-		// Разобрать выбор в меню:
-		switch (wmId) // Обработка отдельных элементов меню
+		
+		switch (wmId) 
 		{
-		case IDM_ABOUT: // О программе 
+		case IDM_ABOUT:  
 			DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
 			break;
-		case IDM_EXIT: // Выход
+		case IDM_EXIT:
 			DestroyWindow(hWnd);
 			break;
-		case ID_32771: // Открыть файл
+		case ID_32771:
 			ZeroMemory(&ofn, sizeof(ofn));
 			ofn.lStructSize = sizeof(ofn);
 			ofn.hwndOwner = hWnd;
-			ofn.lpstrFile = NameFile; // Сюда будет записано имя файла
-									  // Set lpstrFile[0] to '\0' so that GetOpenFileName does not 
-									  // use the contents of szFile to initialize itself.
+			ofn.lpstrFile = NameFile;
 			ofn.lpstrFile[0] = '\0';
 			ofn.nMaxFile = 255;
-			ofn.lpstrFilter = "Шифрованные файлы (*.shf)\0*.shf\0Все файлы\0*.*\0"; // Фильтр для отображения файлов
+			ofn.lpstrFilter = "ГГЁГґГ°Г®ГўГ Г­Г­Г»ГҐ ГґГ Г©Г«Г» (*.shf)\0*.shf\0Г‚Г±ГҐ ГґГ Г©Г«Г»\0*.*\0"; 
 			ofn.nFilterIndex = 0;
 			ofn.lpstrFileTitle = NULL;
 			ofn.nMaxFileTitle = 0;
 			ofn.lpstrInitialDir = NULL;
 			ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
-			ofn.lpstrDefExt = "shf"; // Строка расширение по умолчанию
+			ofn.lpstrDefExt = "shf";
 
-			if (GetOpenFileName(&ofn)) // Появляется окно "Открыть", функция возвращает истинно, если нажата кнопка Открыть
+			if (GetOpenFileName(&ofn)) 
 			{
-				// Отображаем окно для ввода ключа
+				
 				if (DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, MyDialog) == IDOK)
 				{
 					FILE *pF1;
-					char Shifr[512]; // Зашифрованный текст
-					pF1 = fopen(NameFile, "rb"); // Открываем файл для чтения в двоичном режиме
+					char Shifr[512]; 
+					pF1 = fopen(NameFile, "rb"); 
 					if (pF1 == 0)
 					{
-						MessageBox(hWnd, "Error opening the file. Perhaps the file does not exist", "Сообщение об ошибке", MB_OK | MB_ICONHAND);
+						MessageBox(hWnd, "Error opening the file. Perhaps the file does not exist", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г®ГЎ Г®ГёГЁГЎГЄГҐ", MB_OK | MB_ICONHAND);
 						return TRUE;
 					}
-					fread(&len, sizeof(int), 1, pF1); // Читаем Размер данных в байтах
-					fread(Shifr, sizeof(char), len, pF1); // Читаем данные из файл
+					fread(&len, sizeof(int), 1, pF1);
+					fread(Shifr, sizeof(char), len, pF1); 
 					fclose(pF1);
-					shifrDeshifr(Shifr, Str, len, key, 2); // Расшифровываем
-					Str[len] = 0; // Строка заканчивается 0
-					InvalidateRect(hWnd, 0, TRUE); // Перерисовка окна
+					shifrDeshifr(Shifr, Str, len, key, 2);
+					Str[len] = 0;
+					InvalidateRect(hWnd, 0, TRUE);
 				}
-				else MessageBox(hWnd, "Данные не прочитаны. Ключ не введен!!", "Сообщение", MB_OK | MB_ICONHAND);
+				else MessageBox(hWnd, "Г„Г Г­Г­Г»ГҐ Г­ГҐ ГЇГ°Г®Г·ГЁГІГ Г­Г». ГЉГ«ГѕГ· Г­ГҐ ГўГўГҐГ¤ГҐГ­!!", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ", MB_OK | MB_ICONHAND);
 			}
 
 
 			break;
-		case ID_32772: // Сохранить файл
+		case ID_32772: 
 			ofn.lStructSize = sizeof(OPENFILENAME);
-			ofn.hwndOwner = hWnd; // родительское окно 
-			ofn.lpstrFilter = "Шифрованные файлы (*.shf)\0*.shf\0Все файлы\0*.*\0"; // Маска (фильтр) для отображаемых файлов
-			ofn.lpstrFile = NameFile;  // Сюда будет записано полное имя файла
+			ofn.hwndOwner = hWnd;  
+			ofn.lpstrFilter = "ГГЁГґГ°Г®ГўГ Г­Г­Г»ГҐ ГґГ Г©Г«Г» (*.shf)\0*.shf\0Г‚Г±ГҐ ГґГ Г©Г«Г»\0*.*\0"; 
+			ofn.lpstrFile = NameFile;  
 			ofn.nMaxFile = 255;
-			ofn.lpstrFileTitle = NULL;//
+			ofn.lpstrFileTitle = NULL;
 			ofn.nMaxFileTitle = 0;
 			ofn.lpstrInitialDir = NULL;
 			ofn.Flags = OFN_SHOWHELP | OFN_OVERWRITEPROMPT;
 			ofn.lpstrTitle = NULL;
-			ofn.lpstrDefExt = "shf"; // Строка расширение по умолчанию
-			if (GetSaveFileName(&ofn)) // Появляется окно "Сохранить", функция возвращает истинно, если нажата кнопка Ok
+			ofn.lpstrDefExt = "shf";
+			if (GetSaveFileName(&ofn)) 
 			{
-				// Отображаем окно для ввода ключа
+				
 				if (DialogBox(hInst, MAKEINTRESOURCE(IDD_DIALOG1), hWnd, MyDialog) == IDOK)
 				{
-					char Shifr[512]; // Зашифрованный текст
-					shifrDeshifr(Str, Shifr, len, key, 1); // Шифрование данных
+					char Shifr[512]; 
+					shifrDeshifr(Str, Shifr, len, key, 1); 
 
-					FILE *pF1;  // Файл для сохранения
-					pF1 = fopen(NameFile, "wb"); // Для зашифрованных данных файл в двоичном режиме
+					FILE *pF1;  
+					pF1 = fopen(NameFile, "wb"); 
 					if (pF1 == 0)
 					{
-						MessageBox(hWnd, "Ошибка открытия файла.", "Сообщение об ошибке", MB_OK | MB_ICONHAND);
+						MessageBox(hWnd, "ГЋГёГЁГЎГЄГ  Г®ГІГЄГ°Г»ГІГЁГї ГґГ Г©Г«Г .", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г®ГЎ Г®ГёГЁГЎГЄГҐ", MB_OK | MB_ICONHAND);
 						return TRUE;
 					}
-					fwrite(&len, sizeof(int), 1, pF1); // Размер данных в байтах
-					fwrite(Shifr, sizeof(char), len, pF1); // Записываем данные в файл
+					fwrite(&len, sizeof(int), 1, pF1); 
+					fwrite(Shifr, sizeof(char), len, pF1); 
 					fclose(pF1);
-					MessageBox(hWnd, "Данные успешно сохранены.", "Сообщение", MB_OK | MB_ICONINFORMATION);
+					MessageBox(hWnd, "Г„Г Г­Г­Г»ГҐ ГіГ±ГЇГҐГёГ­Г® Г±Г®ГµГ°Г Г­ГҐГ­Г».", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ", MB_OK | MB_ICONINFORMATION);
 				}
-				else MessageBox(hWnd, "Данные не сохранены. Ключ не введен!!", "Сообщение", MB_OK | MB_ICONHAND);
+				else MessageBox(hWnd, "Г„Г Г­Г­Г»ГҐ Г­ГҐ Г±Г®ГµГ°Г Г­ГҐГ­Г». ГЉГ«ГѕГ· Г­ГҐ ГўГўГҐГ¤ГҐГ­!!", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ", MB_OK | MB_ICONHAND);
 			}
 
 			break;
@@ -324,11 +299,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			return DefWindowProc(hWnd, message, wParam, lParam);
 		}
 		break;
-	case WM_PAINT: // Перерисовка окна
+	case WM_PAINT:
 		hdc = BeginPaint(hWnd, &ps);
-		// TODO: добавьте любой код отрисовки...
-		SetTextColor(hdc, RGB(0, 0, 255));
-		TextOut(hdc, 40, 40, Str, len); // Вывод строки
+		
+		SetTextColor(hdc, RGB(0, 0, 0));
+		TextOut(hdc, 40, 40, Str, len); 
 		EndPaint(hWnd, &ps);
 		break;
 	case WM_DESTROY:
@@ -340,7 +315,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-// Обработчик сообщений для окна "О программе".
+
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
@@ -360,7 +335,7 @@ INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	return (INT_PTR)FALSE;
 }
 
-// Обработчик сообщений для окна "Ввод секретного ключа.
+
 INT_PTR CALLBACK MyDialog(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	UNREFERENCED_PARAMETER(lParam);
@@ -372,20 +347,20 @@ INT_PTR CALLBACK MyDialog(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_COMMAND:
 		if (LOWORD(wParam) == IDOK || LOWORD(wParam) == IDCANCEL)
 		{
-			if (LOWORD(wParam) == IDOK) // Читаем секретный ключ из текстового поля
+			if (LOWORD(wParam) == IDOK) 
 			{
 				char Str[32];
-				SendDlgItemMessage(hDlg, IDC_EDIT1, WM_GETTEXT, 31, (LPARAM)Str); // Прочитали текст из текстового поля и записали в струку Str
-																				  // Читаем данные из строки
-				if (sscanf(Str, "%d", &key) < 1) // Целое значение не прочитано из строки
+				SendDlgItemMessage(hDlg, IDC_EDIT1, WM_GETTEXT, 31, (LPARAM)Str); 
+																				 
+				if (sscanf(Str, "%d", &key) < 1)
 				{
-					MessageBox(hDlg, "Неверный формат ключа. Ключ должен быть целым числом", "Сообщение о неверном формате ключа", MB_OK | MB_ICONHAND);
-					return (INT_PTR)TRUE; // Выход без закрытия диалогового окна
+					MessageBox(hDlg, "ГЌГҐГўГҐГ°Г­Г»Г© ГґГ®Г°Г¬Г ГІ ГЄГ«ГѕГ·Г . ГЉГ«ГѕГ· Г¤Г®Г«Г¦ГҐГ­ ГЎГ»ГІГј Г¶ГҐГ«Г»Г¬ Г·ГЁГ±Г«Г®Г¬", "Г‘Г®Г®ГЎГ№ГҐГ­ГЁГҐ Г® Г­ГҐГўГҐГ°Г­Г®Г¬ ГґГ®Г°Г¬Г ГІГҐ ГЄГ«ГѕГ·Г ", MB_OK | MB_ICONHAND);
+					return (INT_PTR)TRUE; 
 
 				}
 
 			}
-			EndDialog(hDlg, LOWORD(wParam)); // Закрытие диалогового окна
+			EndDialog(hDlg, LOWORD(wParam)); 
 			return (INT_PTR)TRUE;
 		}
 		break;
